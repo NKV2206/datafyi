@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { SiteNav } from "@/components/site-nav"
 import { Suspense } from "react"
+import { WalletProvider } from "@/providers/wallet-provider"
 
 export const metadata: Metadata = {
   title: "Datafyi — Dataset Access Platform",
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <SiteNav />
-        <Suspense>
-          <main className="min-h-dvh">{children}</main>
-        </Suspense>
-        <Analytics />
+        <WalletProvider>
+          <SiteNav />
+          <Suspense>
+            <main className="min-h-dvh">{children}</main>
+          </Suspense>
+          <Analytics />
+        </WalletProvider>
       </body>
     </html>
   )
