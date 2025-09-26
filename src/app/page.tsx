@@ -31,7 +31,7 @@ export default function HomePage() {
         <Stat label="Executed Purchases" value="25M" />
       </section>
 
-      <aside className="mt-10">
+      {/* <aside className="mt-10">
         <Card>
           <CardContent className="p-4 text-xs text-muted-foreground">
             Inspired by clean fintech hero layouts — adapted to a web3 dark theme.
@@ -42,7 +42,7 @@ export default function HomePage() {
             />
           </CardContent>
         </Card>
-      </aside>
+      </aside> */}
     </div>
   )
 }
