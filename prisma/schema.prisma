@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int           @id @default(autoincrement()) // Unique ID for internal use
+  address  String        @unique // Wallet address of the user
+  datasets Dataset[] // One-to-many relationship: User -> Datasets
+  history  Transaction[] // One-to-many relationship: User -> Transactions
+}
+
+model Dataset {
+  id          Int      @id @default(autoincrement()) // Internal ID for the dataset
+  name        String   // Name of the dataset
+  filename    String   // Original filename of the dataset
+  tags        String[] // Tags related to the dataset
+  description String   // Description of the dataset
+  owner       String   // Wallet address of the dataset owner
+  size        Int      // Size of the dataset (in bytes, MB, etc.)
+  blobId      String   // Unique BlobID for accessing the dataset in decentralized storage
+  userId      Int      // Foreign key to the User who uploaded the dataset
+  user        User     @relation(fields: [userId], references: [id]) // Link to the User
+
+  TransactionDataset TransactionDataset[]
+}
+
+model Transaction {
+  id              Int      @id @default(autoincrement()) // Unique transaction ID
+  agentId         String // Wallet address of the agent (user who purchased the datasets)
+  amountsPaid     Float[] // Amounts paid to each dataset owner
+  totalAmount     Float // Total amount paid for the transaction
+  transactionDate DateTime @default(now()) // Date and time of the transaction
+
+  // No direct relation to Dataset here
+  user               User                 @relation(fields: [agentId], references: [address]) // Link to the User (agent)
+  TransactionDataset TransactionDataset[]
+}
+
+// Join table to represent many-to-many relationship between Transaction and Dataset
+model TransactionDataset {
+  id          Int         @id @default(autoincrement())
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+  dataset     Dataset     @relation(fields: [datasetId], references: [id])
+
+  transactionId Int
+  datasetId     Int
+}
