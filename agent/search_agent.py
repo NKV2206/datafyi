@@ -48,23 +48,6 @@ class ParseAgent:
         except Exception as e:
             raise Exception(f"Error identifying tags: {str(e)}") from e
 
-class SelectionAgent:
-    def __init__(self, model : str = os.getenv("LANGCHAIN_MODEL"), api_key : str = os.getenv("MODEL_API_KEY")):
-        self.llm = None
-        if (model == "llama3-70b-8192"):
-            assert False, "llama3-70b-8192 has been discontinued"
-            # self.llm = ChatGroq(model=model, api_key=api_key)
-        elif (model == "meta-llama/llama-4-scout-17b-16e-instruct"):
-            self.llm = ChatGroq(model=model, api_key=api_key)
-
-        self.search_req_template = ChatPromptTemplate.from_messages([
-            ("system", """
-             """),
-            ("human", "Request : {request}")
-        ])
-
-        self.req_to_list = self.search_req_template | self.llm
-
 def get_tags(parse_agent : ParseAgent, req : str)-> List[str]:
     return parse_agent.parse_req(req)
 
