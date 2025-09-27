@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { WalletGuard } from "@/components/wallet-guard"
-import { useState, useEffect, useCallback, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode } from "react"
+import { useState, useEffect, useCallback, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, FormEvent } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, Database, User, Tag, Clock } from "lucide-react"
 
@@ -59,6 +59,10 @@ export default function SearchPage() {
     }
   }, [query])
 
+  function handleBuyDataset(e: FormEvent<HTMLFormElement>, dataset: any): void {
+    throw new Error("Function not implemented.")
+  }
+
   // Remove automatic search on query change - now only manual search
   // useEffect(() => {
   //   if (query) {
@@ -106,7 +110,7 @@ export default function SearchPage() {
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   />
                 </div>
-                <Button
+                <button
                   onClick={handleSearch}
                   disabled={loading || !query}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -119,7 +123,7 @@ export default function SearchPage() {
                   ) : (
                     "Search"
                   )}
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -174,7 +178,7 @@ export default function SearchPage() {
                           </div>
 
                           {/* Tags */}
-                          <div className="flex items-start gap-2">
+                          <div className="flex items-start gap-2 mb-6">
                             <Tag className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                             <div className="flex flex-wrap gap-1.5">
                               {dataset.tags.map((tag: string) => (
@@ -187,6 +191,16 @@ export default function SearchPage() {
                               ))}
                             </div>
                           </div>
+
+                          {/* Buy Button */}
+                          <form onSubmit={(e) => handleBuyDataset(e, dataset)}>
+                            <button 
+                              type="submit"
+                              className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.98]"
+                            >
+                              Buy Dataset
+                            </button>
+                          </form>
                         </CardContent>
                       </Card>
                     ))}
