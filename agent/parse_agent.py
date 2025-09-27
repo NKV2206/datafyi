@@ -11,7 +11,7 @@ from typing import List
 
 load_dotenv()
 
-class ParseAgent(AbstractParseAgent):
+class DatafyiParseAgent(AbstractParseAgent):
     def __init__(self, model : str = os.getenv("LANGCHAIN_MODEL"), api_key : str = os.getenv("MODEL_API_KEY")):
         super().__init__()
         self.llm = None
@@ -53,7 +53,7 @@ class ParseAgent(AbstractParseAgent):
         except Exception as e:
             raise Exception(f"Error identifying tags: {str(e)}") from e
 
-def get_tags(parse_agent : ParseAgent, req : str)-> List[str]:
+def get_tags(parse_agent : DatafyiParseAgent, req : str)-> List[str]:
     return parse_agent.parse_req(req)
 
 if __name__ == "__main__":
@@ -64,6 +64,6 @@ if __name__ == "__main__":
     assert args.request, "Can't have empty request string"
 
     print("Starting ParseAgent demo")
-    agent = ParseAgent()
+    agent = DatafyiParseAgent()
     res = get_tags(agent, args.request)
     print(res)
