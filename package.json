@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@coinbase/cdp-sdk": "^1.8.0",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.16.2",
     "@radix-ui/react-accordion": "1.2.2",
@@ -39,6 +40,8 @@
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
     "@rainbow-me/rainbowkit": "^2.2.8",
+    "@solana/buffer-layout-utils": "^0.3.0",
+    "@solana/spl-token": "^0.1.8",
     "@tanstack/react-query": "^5.90.2",
     "@vercel/analytics": "latest",
     "@walletconnect/ethereum-provider": "^2.21.9",
@@ -48,10 +51,11 @@
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
+    "express": "^5.1.0",
     "geist": "latest",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "next": "^14.2.33",
+    "next": "^15.5.4",
     "next-themes": "^0.4.6",
     "react": "^18",
     "react-day-picker": "9.8.0",
@@ -66,6 +70,8 @@
     "vaul": "^0.9.9",
     "viem": "^2.37.8",
     "wagmi": "^2.17.5",
+    "x402-express": "^0.6.5",
+    "x402-next": "^0.6.5",
     "zod": "3.25.67"
   },
   "devDependencies": {
@@ -73,6 +79,7 @@
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "bigint-buffer": "^1.1.5",
     "pino-pretty": "^13.1.1",
     "postcss": "^8.5",
     "prisma": "^6.16.2",
