@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { WalletConnectButton } from "./wallet-connect-button"
 
 export function SiteNav() {
   const pathname = usePathname()
@@ -20,22 +20,22 @@ export function SiteNav() {
         <Link href="/" className="font-semibold tracking-tight">
           Datafyi
         </Link>
-        <div className="flex items-center gap-2">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={cn(
-                "px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60",
-                pathname === l.href && "text-foreground bg-secondary",
-              )}
-            >
-              {l.label}
-            </Link>
-          ))}
-          <Button size="sm" className="bg-[var(--brand)] text-[var(--on-brand)] hover:opacity-90">
-            Connect Wallet
-          </Button>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60",
+                  pathname === l.href && "text-foreground bg-secondary",
+                )}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </div>
+          <WalletConnectButton />
         </div>
       </div>
     </nav>

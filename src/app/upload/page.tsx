@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,37 +11,52 @@ import { Badge } from "@/components/ui/badge"
 import { saveMyUpload } from "@/lib/storage"
 import { randomWalrusId } from "@/lib/walrus"
 import type { Dataset } from "@/lib/types"
+import {useAccount} from "wagmi";
+import { arDZ } from "date-fns/locale"
 
 export default function UploadPage() {
+  const {address} = useAccount();
   const [file, setFile] = useState<File | null>(null)
   const [tags, setTags] = useState<string>("")
   const [desc, setDesc] = useState("")
   const [status, setStatus] = useState<string>("")
 
   const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!file) return setStatus("Choose a file first.")
-    setStatus("Uploading to Walrus...")
-    // Simulate upload to Walrus and DB update
-    const blobId = randomWalrusId()
-    const dataset: Dataset = {
-      id: crypto.randomUUID(),
-      blobId,
-      name: file.name,
-      sizeMB: Math.max(1, Math.round(file.size / 1_000_000)),
-      owner: "0xYOU",
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
-      description: desc || "—",
+    e.preventDefault();
+    if (!file) return setStatus("Choose a file first.");
+    setStatus("Uploading to Walrus...");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("name", file.name); // Dataset name
+      formData.append("description", desc || "—"); // Dataset description
+      formData.append("tags", tags); // Comma-separated tags
+      formData.append("userAddress", address as string ); // Replace with actual logged-in user ID
+
+      const res = await fetch("/api/walrus", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        setStatus(`Upload failed: ${result.error || "Unknown error"}`);
+        return;
+      }
+
+      // Successful upload
+      setStatus(`Uploaded • BlobID: ${result.blobId}`);
+      setFile(null);
+      setTags("");
+      setDesc("");
+    } catch (err) {
+      console.error(err);
+      setStatus("Upload failed due to a network or server error.");
     }
-    saveMyUpload(dataset)
-    setStatus(`Uploaded • BlobID: ${blobId}`)
-    setFile(null)
-    setTags("")
-    setDesc("")
-  }
+  };
+
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
