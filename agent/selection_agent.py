@@ -10,7 +10,7 @@ from typing import List
 
 load_dotenv()
 
-class SelectionAgent(AbstractSelectionAgent):
+class DatafyiSelectionAgent(AbstractSelectionAgent):
     def __init__(self, maxSelects = 3, model: str = os.getenv("LANGCHAIN_MODEL"), api_key: str = os.getenv("MODEL_API_KEY")):
         super().__init__()
         self.llm = None
@@ -60,7 +60,7 @@ class SelectionAgent(AbstractSelectionAgent):
             allScores = [float(score.strip()) for score in allScores]
 
             scored_datasets = [
-                {"dataset_id": dataset_list[i]["Dataset ID"], "score": allScores[i]}
+                {"dataset_id": dataset_list[i]["id"], "score": allScores[i]}
                 for i in range(len(allScores))
             ]
 
@@ -77,7 +77,7 @@ def dataset_filter(selectAgent, request, criteria, dataset_list):
 
 if __name__ == "__main__":
     print("Starting SelectionAgent demo...")
-    agent = SelectionAgent(maxSelects=2)
+    agent = DatafyiSelectionAgent(maxSelects=2)
     
     req = "I'm in dire need of petal data that has fertilizer as a variable. PLS HElp man"
     crit = "Datasets using phosphate would be best"
