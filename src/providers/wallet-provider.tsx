@@ -3,7 +3,7 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import { WagmiProvider } from 'wagmi'
-import { polygonAmoy } from 'wagmi/chains'
+import { arbitrumSepolia, polygonAmoy } from 'wagmi/chains'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 
@@ -14,7 +14,7 @@ const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || ''
 const config = getDefaultConfig({
   appName: 'Datafyi',
   projectId: projectId,
-  chains: [polygonAmoy],
+  chains: [polygonAmoy, arbitrumSepolia],
   ssr: true,
 })
 
