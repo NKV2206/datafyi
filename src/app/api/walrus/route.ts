@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-const PUBLISHER = "https://publisher.walrus-testnet.walrus.space";
+const PUBLISHER = "http://walrus-publisher-testnet.cetus.zone:9001";
 
 export async function POST(req: Request) {
   try {
@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const tags = (formData.get("tags") as string)?.split(",") || [];
+    const final_tags = tags.map(t=>t.toLowerCase());
     const userAddress = (formData.get("userAddress") as string);
 
     if (!name || !description || !userAddress) {
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
       data: {
         name,
         filename: file.name,
-        tags,
+        tags:final_tags,
         description,
         owner: userAddress, // You may replace this with a proper owner if needed
         size: file.size,
