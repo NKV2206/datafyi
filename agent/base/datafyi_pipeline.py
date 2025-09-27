@@ -9,10 +9,10 @@ class DatafyiClient():
         self.selection_agent = selection_agent
         self.payment_agent = payment_agent
 
-    def make_request(self, req : str, crit : str, maxDatasets : int) -> List[str]:
+    def make_request(self, req : str, crit : str) -> List[str]:
         tags = self.parse_agent.parse_req(req)
         # Post these tags to backend API 1
         content_listings = [{}]
-        dataset_ids = self.selection_agent.score_datasets(req, crit, maxDatasets, content_listings)
+        dataset_ids = self.selection_agent.score_datasets(req, crit, content_listings)
         blob_ids = self.payment_agent.make_payments(dataset_ids) # Has the 2nd backend API call
 
