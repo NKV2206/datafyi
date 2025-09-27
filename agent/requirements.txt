@@ -1,3 +1,5 @@
 langchain
 langchain-groq
 python-dotenv
+x402
+eth_account
