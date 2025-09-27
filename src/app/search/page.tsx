@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { WalletGuard } from "@/components/wallet-guard"
-import { useState, useEffect, useCallback, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode } from "react"
+import { useState, useEffect, useCallback, AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, FormEvent } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, Database, User, Tag, Clock } from "lucide-react"
 
@@ -37,7 +37,7 @@ export default function SearchPage() {
 
       // Set the results
       // [{ id, tags, description }]
-      const transformed = datasets.map(({description,id,owner,tags}:any)=>{
+      const transformed = datasets.map(({description,id,owner,tags,price,size}:any)=>{
         tags = tags.join(",");
         return {description,id,tags};
       }) 
@@ -58,6 +58,10 @@ export default function SearchPage() {
       setLoading(false)
     }
   }, [query])
+
+  function handleBuyDataset(e: FormEvent<HTMLFormElement>, dataset: any): void {
+    throw new Error("Function not implemented.")
+  }
 
   // Remove automatic search on query change - now only manual search
   // useEffect(() => {
@@ -106,7 +110,7 @@ export default function SearchPage() {
                     onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   />
                 </div>
-                <Button
+                <button
                   onClick={handleSearch}
                   disabled={loading || !query}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg px-8 py-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -119,7 +123,7 @@ export default function SearchPage() {
                   ) : (
                     "Search"
                   )}
-                </Button>
+                </button>
               </div>
             </div>
           </div>
@@ -144,51 +148,66 @@ export default function SearchPage() {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {results.map((dataset, index) => (
-                      <Card 
-                        key={dataset.id} 
-                        className="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1"
-                        style={{ animationDelay: `${index * 100}ms` }}
-                      >
-                        <CardContent className="p-6">
-                          {/* Header */}
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex items-center gap-2 text-blue-400">
-                              <Database className="w-4 h-4" />
-                              <span className="text-sm font-mono">{dataset.id}</span>
+                    <Card 
+                      key={dataset.id} 
+                      className="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      <CardContent className="p-6">
+                        {/* Header */}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-2 text-blue-400">
+                            <Database className="w-4 h-4" />
+                            <span className="text-sm font-mono">{dataset.id}</span>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-green-400">
+                              ${dataset.price * dataset.size}
                             </div>
                           </div>
+                        </div>
 
-                          {/* Description */}
-                          <div className="mb-4">
-                            <h3 className="font-semibold text-white text-lg leading-tight mb-2 group-hover:text-blue-300 transition-colors">
-                              {dataset.description}
-                            </h3>
-                          </div>
+                        {/* Description */}
+                        <div className="mb-4">
+                          <h3 className="font-semibold text-white text-lg leading-tight mb-2 group-hover:text-blue-300 transition-colors">
+                            {dataset.description}
+                          </h3>
+                        </div>
 
-                          {/* Owner */}
-                          <div className="flex items-center gap-2 mb-4 text-gray-400">
-                            <User className="w-4 h-4 flex-shrink-0" />
-                            <span className="text-sm truncate" title={dataset.owner}>
-                              {dataset.owner}
-                            </span>
-                          </div>
+                        {/* Owner */}
+                        <div className="flex items-center gap-2 mb-4 text-gray-400">
+                          <User className="w-4 h-4 flex-shrink-0" />
+                          <span className="text-sm truncate" title={dataset.owner}>
+                            {dataset.owner}
+                          </span>
+                        </div>
 
-                          {/* Tags */}
-                          <div className="flex items-start gap-2">
-                            <Tag className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                            <div className="flex flex-wrap gap-1.5">
-                              {dataset.tags.map((tag: string) => (
-                                <span 
-                                  key={tag.toString()} 
-                                  className="text-xs px-2.5 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-full hover:bg-blue-500/30 transition-colors cursor-default"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
+                        {/* Tags */}
+                        <div className="flex items-start gap-2 mb-6">
+                          <Tag className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                          <div className="flex flex-wrap gap-1.5">
+                            {dataset.tags.map((tag: string) => (
+                              <span 
+                                key={tag.toString()} 
+                                className="text-xs px-2.5 py-1 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-full hover:bg-blue-500/30 transition-colors cursor-default"
+                              >
+                                {tag}
+                              </span>
+                            ))}
                           </div>
-                        </CardContent>
-                      </Card>
+                        </div>
+
+                        {/* Buy Button */}
+                        <form onSubmit={(e) => handleBuyDataset(e, dataset)}>
+                          <button 
+                            type="submit"
+                            className="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 active:scale-[0.98]"
+                          >
+                            Buy Dataset
+                          </button>
+                        </form>
+                      </CardContent>
+                    </Card>
                     ))}
                   </div>
                 </div>

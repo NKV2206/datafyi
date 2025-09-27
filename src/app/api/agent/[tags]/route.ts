@@ -23,6 +23,8 @@ export async function GET(req: Request, params: { params: { tags: string } }) {
           owner:true,
           tags: true,
           description: true,
+          size:true,
+          price:true,
         },
       });
     } else {
@@ -33,6 +35,8 @@ export async function GET(req: Request, params: { params: { tags: string } }) {
           owner:true,
           tags: true,
           description: true,
+          size:true,
+          price:true,
         },
       });
     }
