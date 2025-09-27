@@ -20,6 +20,21 @@ export async function POST(req: Request) {
     const final_tags = tags.map(t=>t.toLowerCase());
     const userAddress = (formData.get("userAddress") as string);
     const priceRaw = formData.get("price") as string;
+    if(!userAddress){
+      return NextResponse.json({ error: "No wallet connected" }, { status: 400 });
+    }
+    const user = await prisma.user.findUnique({
+      where: {
+        address: userAddress
+      }
+    });
+    if(!user) {
+      await prisma.user.create({
+        data: {
+          address: userAddress
+        }
+      });
+    }
     if (!name || !description || !userAddress) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
