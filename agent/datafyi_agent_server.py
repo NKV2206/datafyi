@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS   # <-- add this
 from selection_agent import DatafyiSelectionAgent, dataset_filter
 from parse_agent import DatafyiParseAgent, get_tags
 
 app = Flask(__name__)
+CORS(app)  # <-- enable CORS for all routes
 
 # Initialize agents once at startup
-selection_agent = DatafyiSelectionAgent(maxSelects=3)
+selection_agent = DatafyiSelectionAgent(maxSelects=6)
 parse_agent = DatafyiParseAgent()
 
 @app.route("/parse", methods=["POST"])

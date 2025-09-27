@@ -20,6 +20,7 @@ export async function GET(req: Request, params: { params: { tags: string } }) {
         },
         select: {
           id: true,
+          owner:true,
           tags: true,
           description: true,
         },
@@ -29,6 +30,7 @@ export async function GET(req: Request, params: { params: { tags: string } }) {
       match_datasets = await prisma.dataset.findMany({
         select: {
           id: true,
+          owner:true,
           tags: true,
           description: true,
         },

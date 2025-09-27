@@ -7,8 +7,8 @@ import { Card, CardContent } from "@/components/ui/card"
 export default function HomePage() {
   return (
     <div className="relative px-6 md:px-10 lg:px-16 py-16 min-h-screen bg-black text-gray-100 overflow-x-hidden">
-      {/* Optional subtle velvet texture overlay */}
-      <div className="absolute inset-0 bg-[url('/textures/velvet.png')] opacity-10 pointer-events-none"></div>
+      {/* Optional subtle velvet texture overlay
+      <div className="absolute inset-0 opacity-10 pointer-events-none"></div> */}
 
       <header className="relative max-w-5xl mx-auto text-center z-10">
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white">
