@@ -7,7 +7,7 @@ import "./globals.css"
 import { SiteNav } from "@/components/site-nav"
 import { Suspense } from "react"
 import { WalletProvider } from "@/providers/wallet-provider"
-
+import {PlasmaBackground} from "@/components/plasma-background";
 export const metadata: Metadata = {
   title: "Datafyi — Dataset Access Platform",
   description: "Upload datasets to Walrus, search with AI, and access purchased blobs with Web3 payments.",
@@ -20,12 +20,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" className="dark h-full">
+      <body className={`h-full font-sans ${GeistSans.variable} ${GeistMono.variable} bg-transparent`}>        
+        <PlasmaBackground />
         <WalletProvider>
           <SiteNav />
           <Suspense>
-            <main className="min-h-dvh">{children}</main>
+            <main className="relative z-10 min-h-screen">{children}</main>
           </Suspense>
           <Analytics />
         </WalletProvider>
