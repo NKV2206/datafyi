@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
 
-    // Extract other fields from the request body (assuming FormData)
+    // Extract other fields from the re43uest body (assuming FormData)
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const tags = (formData.get("tags") as string)?.split(",") || [];
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
       throw new Error(`Publisher upload failed: ${response.status} ${response.statusText}`);
     }
 
-    const metadata = await response.json();
+    const metadata = await response.json();q
     const blobId = metadata?.newlyCreated?.blobObject?.blobId;
     if (!blobId) {
       console.error("Invalid response from publisher:", metadata);
