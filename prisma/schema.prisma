@@ -25,7 +25,7 @@ model Dataset {
   blobId      String   // Unique BlobID for accessing the dataset in decentralized storage
   userAddress String   // Wallet address of the user who uploaded the dataset
   user        User     @relation(fields: [userAddress], references: [address]) // Link to the User
-
+  price       Decimal      @default(0)//Price per byte for this specific dataset
   TransactionDataset TransactionDataset[]
 }
 

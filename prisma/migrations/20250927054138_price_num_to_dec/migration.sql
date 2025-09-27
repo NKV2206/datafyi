@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "public"."Dataset" ALTER COLUMN "price" SET DEFAULT 0,
+ALTER COLUMN "price" SET DATA TYPE DECIMAL(65,30);
