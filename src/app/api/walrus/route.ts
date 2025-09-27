@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
+import { Prisma } from "@prisma/client";
 const PUBLISHER = "http://walrus-publisher-testnet.cetus.zone:9001";
 
 export async function POST(req: Request) {
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const tags = (formData.get("tags") as string)?.split(",") || [];
     const final_tags = tags.map(t=>t.toLowerCase());
     const userAddress = (formData.get("userAddress") as string);
-
+    const priceRaw = formData.get("price") as string;
     if (!name || !description || !userAddress) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
@@ -63,6 +63,7 @@ export async function POST(req: Request) {
         size: file.size,
         blobId,
         userAddress: userAddress,
+        price: new Prisma.Decimal(priceRaw)
       },
     });
 

@@ -13,6 +13,7 @@ import { randomWalrusId } from "@/lib/walrus"
 import type { Dataset } from "@/lib/types"
 import {useAccount} from "wagmi";
 import { arDZ } from "date-fns/locale"
+import { form } from "viem/chains"
 
 export default function UploadPage() {
   const {address} = useAccount();
@@ -20,6 +21,8 @@ export default function UploadPage() {
   const [tags, setTags] = useState<string>("")
   const [desc, setDesc] = useState("")
   const [status, setStatus] = useState<string>("")
+  const [price, setPrice] = useState<string>("1.0");
+
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +36,7 @@ export default function UploadPage() {
       formData.append("description", desc || "—"); // Dataset description
       formData.append("tags", tags); // Comma-separated tags
       formData.append("userAddress", address as string ); // Replace with actual logged-in user ID
-
+      formData.append("price", price.toString());
       const res = await fetch("/api/walrus", {
         method: "POST",
         body: formData,
@@ -73,6 +76,14 @@ export default function UploadPage() {
             />
             <Input placeholder="tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} />
             <Textarea placeholder="Short description" value={desc} onChange={(e) => setDesc(e.target.value)} />
+            <Input
+              type="number"
+              step="0.0000001" // allow decimals
+              min={0}
+              placeholder="Price (USD) per Byte"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
             <div className="flex items-center gap-2">
               {tags
                 .split(",")

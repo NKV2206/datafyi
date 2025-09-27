@@ -18,12 +18,23 @@ export async function GET(req: Request, params: { params: { tags: string } }) {
             hasSome: tags_list,
           },
         },
+        select: {
+          id: true,
+          tags: true,
+          description: true,
+        },
       });
     } else {
       // No tags passed → return everything
-      match_datasets = await prisma.dataset.findMany();
+      match_datasets = await prisma.dataset.findMany({
+        select: {
+          id: true,
+          tags: true,
+          description: true,
+        },
+      });
     }
-
+    match_datasets.map(ds=>{});
     return NextResponse.json(match_datasets);
   } catch (err) {
     console.error("Error in agent route:", err);
