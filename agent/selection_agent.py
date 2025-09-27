@@ -84,19 +84,19 @@ if __name__ == "__main__":
     
     dataset_list = [
         {
-            "Dataset ID": "PetalFertilizer_001",
-            "Tags": "Petal, Fertilizer, Magnesium, Agriculture",
-            "Description": "This dataset contains petal growth data from plants with magnesium-based fertilizers as a variable, collected from agricultural fields."
+            "id": "PetalFertilizer_001",
+            "tags": "Petal, Fertilizer, Magnesium, Agriculture",
+            "description": "This dataset contains petal growth data from plants with magnesium-based fertilizers as a variable, collected from agricultural fields."
         },
         {
-            "Dataset ID": "TreeFertilizer_002",
-            "Tags": "Tree, Fertilizer, Organic, Agriculture",
-            "Description": "A dataset focusing on tree growth with organic fertilizers. Using phosphate-based testing, it explores different fertilizers in agriculture."
+            "id": "TreeFertilizer_002",
+            "tags": "Tree, Fertilizer, Organic, Agriculture",
+            "description": "A dataset focusing on tree growth with organic fertilizers. Using phosphate-based testing, it explores different fertilizers in agriculture."
         },
         {
-            "Dataset ID": "RandomData_003",
-            "Tags": "Weather, Traffic, India",
-            "Description": "This dataset contains weather and traffic data collected from various cities in India, with no relation to fertilizers or petal growth."
+            "id": "RandomData_003",
+            "tags": "Weather, Traffic, India",
+            "description": "This dataset contains weather and traffic data collected from various cities in India, with no relation to fertilizers or petal growth."
         }
     ]
     
