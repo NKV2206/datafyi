@@ -2,13 +2,18 @@ from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 
 from dotenv import load_dotenv
-from typing import List
 import os
+
+from base.parse_agent_base import *
+
+
+from typing import List
 
 load_dotenv()
 
-class ParseAgent:
+class ParseAgent(AbstractParseAgent):
     def __init__(self, model : str = os.getenv("LANGCHAIN_MODEL"), api_key : str = os.getenv("MODEL_API_KEY")):
+        super().__init__()
         self.llm = None
         if (model == "llama3-70b-8192"):
             assert False, "llama3-70b-8192 has been discontinued"
@@ -56,6 +61,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Parse dataset request into keywords")
     parser.add_argument("request", type=str, help="The request describing the dataset")
     args = parser.parse_args()
+    assert args.request, "Can't have empty request string"
 
     print("Starting ParseAgent demo")
     agent = ParseAgent()
