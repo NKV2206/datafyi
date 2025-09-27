@@ -14,6 +14,7 @@ import type { Dataset } from "@/lib/types"
 import {useAccount} from "wagmi";
 import { arDZ } from "date-fns/locale"
 import { form } from "viem/chains"
+import { WalletGuard } from "@/components/wallet-guard"
 
 export default function UploadPage() {
   const {address} = useAccount();
@@ -62,47 +63,49 @@ export default function UploadPage() {
 
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-10">
-      <Card>
-        <CardHeader>
-          <CardTitle>Upload dataset</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <Input
-              type="file"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              aria-label="Choose dataset file"
-            />
-            <Input placeholder="tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} />
-            <Textarea placeholder="Short description" value={desc} onChange={(e) => setDesc(e.target.value)} />
-            <Input
-              type="number"
-              step="0.0000001" // allow decimals
-              min={0}
-              placeholder="Price (USD) per Byte"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <div className="flex items-center gap-2">
-              {tags
-                .split(",")
-                .map((t) => t.trim())
-                .filter(Boolean)
-                .slice(0, 5)
-                .map((t) => (
-                  <Badge key={t} variant="outline">
-                    {t}
-                  </Badge>
-                ))}
-            </div>
-            <Button type="submit" className="bg-[var(--brand)] text-[var(--on-brand)] hover:opacity-90">
-              Upload to Walrus
-            </Button>
-            <p className="text-sm text-muted-foreground">{status}</p>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    <WalletGuard>
+      <div className="mx-auto max-w-2xl px-6 py-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>Upload dataset</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={onSubmit} className="space-y-4">
+              <Input
+                type="file"
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                aria-label="Choose dataset file"
+              />
+              <Input placeholder="tags (comma separated)" value={tags} onChange={(e) => setTags(e.target.value)} />
+              <Textarea placeholder="Short description" value={desc} onChange={(e) => setDesc(e.target.value)} />
+              <Input
+                type="number"
+                step="0.0000001" // allow decimals
+                min={0}
+                placeholder="Price (USD) per Byte"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              <div className="flex items-center gap-2">
+                {tags
+                  .split(",")
+                  .map((t) => t.trim())
+                  .filter(Boolean)
+                  .slice(0, 5)
+                  .map((t) => (
+                    <Badge key={t} variant="outline">
+                      {t}
+                    </Badge>
+                  ))}
+              </div>
+              <Button type="submit" className="bg-[var(--brand)] text-[var(--on-brand)] hover:opacity-90">
+                Upload to Walrus
+              </Button>
+              <p className="text-sm text-muted-foreground">{status}</p>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </WalletGuard>
   )
 }

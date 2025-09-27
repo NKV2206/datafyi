@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { priceForMB } from "@/lib/pricing"
 import type { Dataset } from "@/lib/types"
 import { savePurchase } from "@/lib/storage"
+import { WalletGuard } from "@/components/wallet-guard"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -49,60 +50,62 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="px-6 md:px-10 lg:px-16 py-8">
-      <div className="flex items-center gap-3">
-        <Input
-          placeholder="Search datasets (e.g., Delhi)"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          className="max-w-lg"
-        />
-        <Button onClick={() => {}} disabled variant="secondary" title="Type to search — results load automatically">
-          Search
-        </Button>
-      </div>
+    <WalletGuard>
+      <div className="px-6 md:px-10 lg:px-16 py-8">
+        <div className="flex items-center gap-3">
+          <Input
+            placeholder="Search datasets (e.g., Delhi)"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="max-w-lg"
+          />
+          <Button onClick={() => {}} disabled variant="secondary" title="Type to search — results load automatically">
+            Search
+          </Button>
+        </div>
 
-      <div className="mt-6">
-        {isLoading && <p className="text-muted-foreground">Searching with AI…</p>}
-        {!isLoading && q && results.length === 0 && <p className="text-muted-foreground">No datasets found.</p>}
-        {!isLoading && results.length > 0 && (
-          <Card>
-            <CardContent className="p-0">
-              <div role="table" className="w-full">
-                <div role="row" className="grid grid-cols-12 px-4 py-3 text-sm text-muted-foreground border-b">
-                  <div className="col-span-1">Pick</div>
-                  <div className="col-span-3">File</div>
-                  <div className="col-span-2">Owner</div>
-                  <div className="col-span-1 text-right">Size</div>
-                  <div className="col-span-2">Tags</div>
-                  <div className="col-span-3">Description</div>
-                </div>
-                {results.map((r) => (
-                  <div role="row" key={r.id} className="grid grid-cols-12 items-start px-4 py-3 border-b/50">
-                    <div className="col-span-1">
-                      <Checkbox checked={!!selected[r.id]} onCheckedChange={() => toggle(r.id)} />
-                    </div>
-                    <div className="col-span-3 font-medium">{r.name}</div>
-                    <div className="col-span-2 text-xs">{r.owner}</div>
-                    <div className="col-span-1 text-right">{r.sizeMB} MB</div>
-                    <div className="col-span-2 flex flex-wrap gap-1">
-                      {r.tags.slice(0, 4).map((t) => (
-                        <Badge key={t} variant="outline">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="col-span-3 text-sm text-muted-foreground">{r.description}</div>
+        <div className="mt-6">
+          {isLoading && <p className="text-muted-foreground">Searching with AI…</p>}
+          {!isLoading && q && results.length === 0 && <p className="text-muted-foreground">No datasets found.</p>}
+          {!isLoading && results.length > 0 && (
+            <Card>
+              <CardContent className="p-0">
+                <div role="table" className="w-full">
+                  <div role="row" className="grid grid-cols-12 px-4 py-3 text-sm text-muted-foreground border-b">
+                    <div className="col-span-1">Pick</div>
+                    <div className="col-span-3">File</div>
+                    <div className="col-span-2">Owner</div>
+                    <div className="col-span-1 text-right">Size</div>
+                    <div className="col-span-2">Tags</div>
+                    <div className="col-span-3">Description</div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+                  {results.map((r) => (
+                    <div role="row" key={r.id} className="grid grid-cols-12 items-start px-4 py-3 border-b/50">
+                      <div className="col-span-1">
+                        <Checkbox checked={!!selected[r.id]} onCheckedChange={() => toggle(r.id)} />
+                      </div>
+                      <div className="col-span-3 font-medium">{r.name}</div>
+                      <div className="col-span-2 text-xs">{r.owner}</div>
+                      <div className="col-span-1 text-right">{r.sizeMB} MB</div>
+                      <div className="col-span-2 flex flex-wrap gap-1">
+                        {r.tags.slice(0, 4).map((t) => (
+                          <Badge key={t} variant="outline">
+                            {t}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="col-span-3 text-sm text-muted-foreground">{r.description}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
-      <SummaryBar count={selectedItems.length} totalMB={totalMB} totalPrice={totalPrice} onBuy={buy} />
-    </div>
+        <SummaryBar count={selectedItems.length} totalMB={totalMB} totalPrice={totalPrice} onBuy={buy} />
+      </div>
+    </WalletGuard>
   )
 }
 
